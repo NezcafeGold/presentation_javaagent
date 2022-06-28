@@ -16,12 +16,17 @@ public class ClassTransformer implements ClassFileTransformer {
                             final byte[] classfileBuffer) {
         byte[] byteCode = classfileBuffer;
 
-        if ("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB".equals(className.replaceAll("/", "."))) {
+       // if ("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB".equals(className.replaceAll("/", "."))) {
 
             System.out.println(className);
             ClassPool pool = ClassPool.getDefault();
+            //pool.appendClassPath(new LoaderClassPath(loader));
             try {
-                CtClass ctClass = pool.getCtClass("com/thiz/was/written/not/by/me/honestly/calc/CreditCalcWithWB$1");
+        System.out.println("1");
+
+                CtClass ctClass = pool.get("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB");
+        System.out.println("SSDADASD");
+
 
 
                 System.out.println("Class was loaded successful!");
@@ -38,7 +43,7 @@ public class ClassTransformer implements ClassFileTransformer {
                 System.out.println("ssadas");
             }
 
-       }
+      // }
 
 
         return byteCode;

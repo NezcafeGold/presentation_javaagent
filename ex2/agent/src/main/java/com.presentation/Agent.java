@@ -5,6 +5,6 @@ import java.util.ArrayList;
 
 public class Agent {
     public static void premain(String agentArgs, Instrumentation instrumentation) {
-        instrumentation.addTransformer(new ClassTransformer());
+        instrumentation.addTransformer(new ClassTransformer(), true);
     }
 }
