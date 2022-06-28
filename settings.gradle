@@ -5,3 +5,8 @@ findProject(':ex1:agent')?.name = 'agent'
 include 'ex1:tester'
 findProject(':ex1:tester')?.name = 'tester'
 
+include 'ex2'
+include 'ex2:agent'
+findProject(':ex2:agent')?.name = 'agent'
+include 'ex2:tester'
+findProject(':ex2:tester')?.name = 'tester'
