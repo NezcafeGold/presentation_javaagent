@@ -1,4 +1,4 @@
-package com.presentation;
+package presentation;
 
 public class Agent {
     public static void premain(String args) {
