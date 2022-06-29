@@ -23,17 +23,13 @@ public class ClassTransformer implements ClassFileTransformer {
 
             try {
 
-
                 CtClass ctClass = pool.get("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB");
 
+                ex1(ctClass);
 
-                CtMethod method = ctClass.getDeclaredMethod("initialize");
-                method.insertBefore("System.out.println(TITLE); ");
+                ex2(ctClass);
 
-
-                ctClass.addMethod(CtNewMethod.make("public void hack(){ frame.setTitle(\"HACKED BY XFIRM\"); }", ctClass));
-                method.insertAfter("hack(); ");
-
+                ex3(ctClass);
 
                 byteCode = ctClass.toBytecode();
                 ctClass.detach();
@@ -50,5 +46,21 @@ public class ClassTransformer implements ClassFileTransformer {
 
 
         return byteCode;
+    }
+
+    private void ex3(CtClass ctClass) throws CannotCompileException, NotFoundException {
+        CtMethod method = ctClass.getDeclaredMethod("initialize");
+        method.insertAfter("javax.swing.JOptionPane.showMessageDialog(null, \"PLEASE BUY LICENSE FOR USING THE TOOL\");  ");
+    }
+
+    private void ex2(CtClass ctClass) throws NotFoundException, CannotCompileException {
+        CtMethod method = ctClass.getDeclaredMethod("initialize");
+        ctClass.addMethod(CtNewMethod.make("public void hack(){ frame.setTitle(\"HACKED BY XFIRM\"); }", ctClass));
+        method.insertAfter("hack(); ");
+    }
+
+    private void ex1(CtClass ctClass) throws NotFoundException, CannotCompileException {
+        CtMethod method = ctClass.getDeclaredMethod("initialize");
+        method.insertBefore("System.out.println(TITLE); ");
     }
 }
