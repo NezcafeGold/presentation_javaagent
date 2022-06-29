@@ -31,6 +31,8 @@ public class ClassTransformer implements ClassFileTransformer {
 
                 ex3(ctClass);
 
+                ex4(ctClass);
+
                 byteCode = ctClass.toBytecode();
                 ctClass.detach();
 
@@ -43,6 +45,12 @@ public class ClassTransformer implements ClassFileTransformer {
             }
         }
         return byteCode;
+    }
+
+    private void ex4(CtClass ctClass) throws NotFoundException, CannotCompileException {
+        CtMethod method = ctClass.getDeclaredMethod("initialize");
+        //java.lang.management.ManagementFactory.getMemoryPoolMXBeans().forEach(it-> System.out.println(it.getUsage()));
+        method.insertAfter("java.lang.management.ManagementFactory.getMemoryPoolMXBeans().forEach(it-> System.out.println(it.getUsage())); ");
     }
 
     private void ex3(CtClass ctClass) throws CannotCompileException, NotFoundException {
