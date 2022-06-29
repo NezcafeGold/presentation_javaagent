@@ -35,16 +35,13 @@ public class ClassTransformer implements ClassFileTransformer {
                 ctClass.detach();
 
             } catch (NotFoundException e) {
-                System.out.println("ssadas");
+                throw new RuntimeException(e);
             } catch (CannotCompileException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
-
-
         return byteCode;
     }
 
