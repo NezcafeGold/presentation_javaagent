@@ -2,11 +2,13 @@ package com.presentation;
 
 import javassist.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
+// java -Xbootclasspath/a:.\ex2\agent\build\libs\javassist-3.29.0-GA.jar -javaagent:.\ex2\agent\build\libs\agent.jar -jar .\ex2\CreditCalc.jar
 public class ClassTransformer implements ClassFileTransformer {
     @Override
     public byte[] transform(final ClassLoader loader,
@@ -16,34 +18,35 @@ public class ClassTransformer implements ClassFileTransformer {
                             final byte[] classfileBuffer) {
         byte[] byteCode = classfileBuffer;
 
-       // if ("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB".equals(className.replaceAll("/", "."))) {
+        ClassPool pool = ClassPool.getDefault();
+        if ("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB".equals(className.replaceAll("/", "."))) {
 
-            System.out.println(className);
-            ClassPool pool = ClassPool.getDefault();
-            //pool.appendClassPath(new LoaderClassPath(loader));
             try {
-        System.out.println("1");
+
 
                 CtClass ctClass = pool.get("com.thiz.was.written.not.by.me.honestly.calc.CreditCalcWithWB");
-        System.out.println("SSDADASD");
 
 
+                CtMethod method = ctClass.getDeclaredMethod("initialize");
+                method.insertBefore("System.out.println(TITLE); ");
 
-                System.out.println("Class was loaded successful!");
 
-                //CtField titleField = ctClass.getField("TITLE");
-//                ctClass.removeField(titleField);
-//
-//                CtField newTitle = CtField.make("public final String TITLE = \"HACKED BY XFIRM\";", ctClass);
-//                ctClass.addField(newTitle);
-//
-//                byteCode = ctClass.toBytecode();
-//                ctClass.detach();
+                ctClass.addMethod(CtNewMethod.make("public void hack(){ frame.setTitle(\"HACKED BY XFIRM\"); }", ctClass));
+                method.insertAfter("hack(); ");
+
+
+                byteCode = ctClass.toBytecode();
+                ctClass.detach();
+
             } catch (NotFoundException e) {
                 System.out.println("ssadas");
+            } catch (CannotCompileException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
-      // }
+        }
 
 
         return byteCode;

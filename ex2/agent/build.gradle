@@ -7,20 +7,32 @@ group 'org.example'
 repositories {
     mavenCentral()
 }
+configurations {
+    // configuration that holds jars to copy into lib
+    extraLibs
+}
 
 dependencies {
     implementation 'org.javassist:javassist:3.29.0-GA'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    extraLibs 'org.javassist:javassist:3.29.0-GA'
 }
 
 test {
     useJUnitPlatform()
 }
 
+
 jar {
+
     manifest {
         attributes "Premain-Class": "com.presentation.Agent"
         attributes "Can-Retransform-Classes": "true"
+        attributes "Boot-Class-Path": "lib/javassist-3.29.0-GA.jar"
+    }
+
+into('lib') {
+        from configurations.extraLibs
     }
 }
